@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Receipt</title>
+    
+       
+    
+</head>
+<body class="Booking Receipt">
+    <div class="receipt">
+        <h1>Booking Receipt</h1>
+        <p>Thank you for booking with us!</p>
+        <div class="details">
+            <p>Reservation ID: <span th:text="${reservation.reservationId}"></span></p>
+            <p>Slot Number: <span th:text="${reservation.slotNumber}"></span></p>
+            <p>Amount: <span th:text="${reservation.amount}"></span></p>
+            <p>Status: <span th:text="${reservation.status}"></span></p>
+            <p>Name: <span th:text="${reservation.name}"></span></p>
+            <p>Email: <span th:text="${reservation.email}"></span></p>
+            <p>Mobile No: <span th:text="${reservation.mobileNo}"></span></p>
+            <p>Duration: <span th:text="${reservation.duration}"></span> hours</p>
+        </div>
+    </div>
+    <div style="text-align: center; margin-top: 20px;">
+        <a th:href="@{/api/reservations/download-receipt/{id}(id=${reservation.id})}" download="receipt.html">Download Receipt</a>
+    </div>
+</body>
+</html>

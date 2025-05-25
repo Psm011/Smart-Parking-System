@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head xmlns:th="http://www.thymeleaf.org">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parking Finder</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
+   <link rel="preload" href="/images/car1.png" as="image">
+   <!-- Correctly reference JavaScript -->
+    <script th:src="@{/javascript/script.js}"></script>
+    <div th:replace="~{navbar.html}"></div>    
+</head>
+<body>
+  
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+           
+            <h1 style="margin-top: 70px;">FIND PARKING IN ONE CLICK</h1>
+            <p>SIMPLE, SECURED & SMART</p>
+           
+        </div>
+    </header>
+<!-- How It Works Section -->
+<section class="how-it-works">
+    <h2 style="margin-left:100px;">HOW IT WORKS</h2>
+    <div class="steps">
+        <div class="step">
+            <img class="lazy-load" src="images/locate-icon.png" alt="Locate Icon">
+            <h3>LOCATE</h3>
+            <p>Find available parking spaces </p>
+        </div>
+        <div class="step">
+            <img class="lazy-load" src="images/calendar-icon.png" alt="Calendar Icon">
+            <h3>SELECT</h3>
+            <p>Choose your desired time, date, and parking duration</p>
+        </div>
+        <div class="step">
+            <img class="lazy-load" src="images/park-icon.png" alt="Park Icon">
+            <h3>PARK</h3>
+            <p>Reserve your spot </p>
+        </div>
+    </div>
+</section>
+
+ 
+</body>
+</html>

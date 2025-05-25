@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <!-- Link to External CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+    <div th:replace="~{navbar.html}"></div>   
+</head>
+<body class="userregistration">
+    <div class="registration-form">
+        <h2 class="form-title">User Registration</h2>
+        <form th:action="@{/register}" th:object="${user}" method="post" novalidate>
+         <div th:if="${error}" class="alert error" role="alert">
+                <p th:text="${error}"></p>
+            </div>
+            <div th:if="${success}" class="alert success" role="alert">
+        <p th:text="${success}"></p>
+      </div>
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" th:value="*{fullName}" required>
+                <p th:if="${#fields.hasErrors('fullName')}" class="error" th:errors="*{fullName}"></p>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" th:value="*{email}" required>
+                <p th:if="${#fields.hasErrors('email')}" class="error" th:errors="*{email}"></p>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" th:value="*{password}" required>
+                <p th:if="${#fields.hasErrors('password')}" class="error" th:errors="*{password}"></p>
+            </div>
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" th:value="*{phoneNumber}" required>
+                <p th:if="${#fields.hasErrors('phoneNumber')}" class="error" th:errors="*{phoneNumber}"></p>
+            </div>
+
+            <!-- Vehicle Type Dropdown -->
+            <div class="form-group" >
+                <label for="vehicleType" >Vehicle Type</label>
+                <select id="vehicleType" name="vehicleType" style="width:100%;" required>
+                    <option value="" disabled selected>Select your vehicle type</option>
+                    <option value="sedan">Sedan</option>
+                    <option value="suv">SUV</option>
+                    <option value="motorcycle">Motorcycle</option>
+                    <option value="electric">Electric Vehicle</option>
+                    <option value="other">Other</option>
+                </select>
+                <p th:if="${#fields.hasErrors('vehicleType')}" class="error" th:errors="*{vehicleType}"></p>
+            </div>
+
+            <!-- Vehicle Number Field -->
+            <div class="form-group">
+                <label for="vehicleNumber">Vehicle Number</label>
+                <input type="text" id="vehicleNumber" name="vehicleNumber" placeholder="Enter your vehicle number" th:value="*{vehicleNumber}" required>
+                <p th:if="${#fields.hasErrors('vehicleNumber')}" class="error" th:errors="*{vehicleNumber}"></p>
+            </div>
+
+            <button type="submit" class="submit-btn">Register</button>
+            <div class="form-footer">
+                <p>Already have an account? <a href="/login">Login here</a>.</p>
+            </div>
+           
+           
+        </form>
+    </div>
+</body>
+</html>

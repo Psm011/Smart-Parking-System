@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head xmlns:th="http://www.thymeleaf.org">
+<link rel="preload" href="/images/carparkingimg.jpg" as="image">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parking Management System</title>
+<script src="/javascript/ParkingSlots.js" defer></script>
+<script src="/javascript/usermanagement.js" defer></script>
+<!-- External CSS -->
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+	<!-- Navbar -->
+	<div class="sidebar">
+		<h1>Parking Management</h1>
+		<ul>
+
+			<li><a href="#" id="user-dashboard-link">Dashboard</a></li>
+			<li class="nav-item">
+			<li class="nav-item"><a class="nav-link parking-link"
+				id="slotStatusLink" href="javascript:void(0)">Slot Status</a></li>
+
+			<li><a href="javascript:void(0)" onclick="fetchUserBookings()">My
+					Bookings</a></li>
+
+			<li><a href="/login"
+				style="background-color: red; margin-left: 5px; padding: 5px 10px; border-radius: 5px; width: 80px;">
+					Logout </a></li>
+
+			<li><a href="#" id="dashboard-link"></a></li>
+			<li><a href="#" id="booking-link"></a></li>
+			<li><a id="parking-slot-link" href="#"></a></li>
+			<li><a href="#" id="user-management-link"></a></li>
+		</ul>
+
+	</div>
+	<div class="content">
+		<div class="header">
+			<div class="parkinglogo">
+				PARK <span class="green">MY Vehical</span>
+			</div>
+			<div class="breadcrumb">Home / Dashboard</div>
+		</div>
+		<!-- Hidden Fields for Logged-in User Details -->
+		<span id="userFullName" style="display: none;"
+			th:text="${session.userFullName}"></span> <span id="userEmailSession"
+			style="display: none;" th:text="${session.userEmail}"></span> <span
+			id="userMobileSession" style="display: none;"
+			th:text="${session.userMobile}"></span> <br>
+
+		<section class="cards" id="user-cards-section">
+			<div class="card blue">
+				<h2 id="total-bookings">0</h2>
+				<!-- Added an h2 for the total bookings -->
+				<p>Total Booking</p>
+				<a href="#">More info <i class="fas fa-arrow-circle-right"></i></a>
+			</div>
+			<div class="card green">
+				<h2>0</h2>
+				<!-- Placeholder to be updated dynamically -->
+				<p>Total Parking Slot</p>
+				<a href="#">More info <i class="fas fa-arrow-circle-right"></i></a>
+			</div>
+			<div class="card bluecolor">
+				<h2>53</h2>
+				<p>Total Vehicle</p>
+				<a href="#">More info <i class="fas fa-arrow-circle-right"></i></a>
+			</div>
+			<div class="card teal">
+				<h2>53</h2>
+				<p>Total Vehicle Owner</p>
+				<a href="#">More info <i class="fas fa-arrow-circle-right"></i></a>
+			</div>
+		</section>
+
+		<!-- Slot Status Section (This will be displayed when the user clicks Slot Status) -->
+		<section id="slotStatusSection" style="display: none;">
+			<h2></h2>
+			<table id="slotsTable" class="table table-bordered">
+				<thead>
+					<tr>
+						<th>Slot Number</th>
+						<th>Status</th>
+
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+			<div class="pagination-container">
+				<button id="prev-page" class="btn btn-secondary">Previous</button>
+				<span id="current-page">1</span>
+				<button id="next-page" class="btn btn-secondary">Next</button>
+			</div>
+
+		</section>
+
+		<!-- Book Slot Modal -->
+		<div class="modal fade" id="bookSlotModal" tabindex="-1" role="dialog"
+			aria-labelledby="bookSlotModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="bookSlotModalLabel">Book Parking
+							Slot</h5>
+						<button type="button" class="close" data-dismiss="modal">
+							<span>&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form id="bookingSlotForm">
+							<div class="form-group">
+								<label for="userName">Name</label> <input type="text"
+									class="form-control" id="userName" autocomplete="userName"
+									readonly>
+							</div>
+							<div class="form-group">
+								<label for="userEmail">Email</label> <input type="email"
+									class="form-control" id="userEmail" autocomplete="userEmail"
+									readonly>
+							</div>
+							<div class="form-group">
+								<label for="userMobile">Mobile Number</label> <input type="text"
+									class="form-control" id="userMobile" autocomplete="userMobile"
+									readonly>
+							</div>
+							<div class="form-group">
+								<label for="slotNumber">Slot Number</label> <input type="text"
+									class="form-control" id="slotNumber" readonly>
+							</div>
+							<div class="form-group">
+								<label for="slotStatus">Slot Status</label> <input type="text"
+									class="form-control" id="slotStatus" autocomplete="slotStatus"
+									readonly>
+							</div>
+							<div class="form-group">
+								<label for="Duration">Duration</label> <input type="text"
+									class="form-control" id="Duration" autocomplete="slotStatus"
+									required>
+							</div>
+							<div class="form-group">
+								<label for="reservationDateTime">Reservation Date & Time</label>
+								<input type="datetime-local" class="form-control"
+									id="reservationDateTime" name="reservationDateTime" required>
+							</div>
+							<div class="form-group">
+								<label for="VehicleNumber">VehicleNumber</label> <input
+									type="text" class="form-control" id="VehicleNumber"
+									autocomplete="slotStatus" required>
+							</div>
+							<div class="form-group">
+								<label for="VehicleType">VehicleType</label> <input type="text"
+									class="form-control" id="VehicleType" autocomplete="slotStatus"
+									required>
+							</div>
+							<div class="form-group">
+								<label for="ModalName">Model Name</label> <input type="text"
+									class="form-control" id="model" autocomplete="slotStatus"
+									required>
+							</div>
+
+							<button type="submit" class="btn btn-primary">Confirm
+								Booking</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Payment Modal -->
+		<div class="modal fade" id="paymentModal" tabindex="-1" role="dialog"
+			aria-labelledby="paymentModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="paymentModalLabel">Payment</h5>
+						<button type="button" class="close" data-dismiss="modal">
+							<span>&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form id="paymentForm">
+							<div class="form-group">
+								<label for="paymentAmount">Amount</label> <input type="text"
+									class="form-control" id="paymentAmount"
+									autocomplete="paymentAmount" value="10" readonly>
+							</div>
+							<button type="button" onclick="paymentstart()"
+								class="btn btn-success">Pay ₹10</button>
+
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Receipt Modal -->
+		<div id="receiptModal" class="modal fade" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" style="margin-left:90px;">Parking Reservation Receipt</h5>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<p>
+							<strong>Name:</strong> <span id="receiptName"></span>
+						</p>
+						<p>
+							<strong>Email:</strong> <span id="receiptEmail"></span>
+						</p>
+
+						<p>
+							<strong>Mobile No:</strong> <span id="receiptMobile"></span>
+						</p>
+						<p>
+							<strong>Date & Time:</strong> <span id="receiptDateTime"></span>
+						</p>
+						<p>
+							<strong>Duration (hr):</strong> <span id="receiptDuration"></span>
+						</p>
+						<p>
+							<strong>Vehicle Number:</strong> <span id="vehicleNo"></span>
+						</p>
+						<p>
+							<strong>Vehicle Name:</strong> <span id="vehicleName"></span>
+						</p>
+
+						<p>
+							<strong>Booked Slots:</strong>
+						</p>
+						<ul id="receiptSlot"></ul>
+						<!-- Updated to a list for multiple slots -->
+						<p>
+							<strong>Total Amount:</strong> <span id="receiptAmount"></span>
+						</p>
+						<p>
+							<strong>Status:</strong> <span id="receiptStatus"></span>
+						</p>
+					</div>
+					<div class="modal-footer">
+						<button id="downloadReceipt" class="btn btn-primary"
+							onClick="downloadReceipt()">Download Receipt</button>
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="footer">
+			<h4 style="font-size:1rem;margin-right:100px"> Vehicle Parking Management System. All rights
+				reserved.</h4>
+		</div>
+		<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+		<!-- Bootstrap 4 CSS -->
+		<link rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+		<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+			integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+			crossorigin="anonymous"></script>
+		<!-- Bootstrap 4 JS -->
+		<script
+			src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+		<script src="/javascript/script.js"></script>
+		<script src="/javascript/BookSlot.js"></script>
+</body>
+</html>

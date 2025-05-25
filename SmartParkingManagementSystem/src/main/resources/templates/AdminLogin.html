@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Your Page Title</title>
+    
+    <div th:replace="~{navbar.html}"></div>   
+</head>
+<body class="adminlogin">
+    <div class="login-container">
+        <form class="login-form" action="/adminlogin" method="POST">
+            <h2>Admin Login</h2>
+           <div th:text="${error}" style="color: red; text-align: center; margin-top: 10px; font-weight: bold; "></div>
+           
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" style="background-color: #04AA6D;" >Login</button>
+        </form>
+    </div>
+    <div class="homefooter" style="width:100%;">
+			<h4>Footer Vehicle Parking Management System. All rights
+				reserved.</h4>
+		</div>
+</body>
+</html>

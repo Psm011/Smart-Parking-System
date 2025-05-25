@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+
+<link rel="stylesheet" href="/css/style.css">
+<script src="/javascript/script.js" defer></script>
+<script src="/javascript/ParkingSlots.js" defer></script>
+<script src="/javascript/usermanagement.js" defer></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<!-- Bootstrap 4 CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<!-- Bootstrap 4 JS (Ensure jQuery is loaded first) -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</head>
+<body class="admindashboard">
+	<div class="sidebar">
+		<h1>Parking Management</h1>
+		<ul>
+			<li><a href="#" id="dashboard-link">Dashboard</a></li>
+			<li><a href="#" id="booking-link">Booking</a></li>
+			<li><a id="parking-slot-link" href="#">Parking Slot</a></li>
+			<li><a href="#" id="user-management-link">User Management</a></li>
+			<li><a href="/adminlogin"
+				style="background-color: red; margin-left: 5px; padding: 5px 10px; border-radius: 5px; width: 80px;">
+					Logout </a></li>
+		</ul>
+	</div>
+
+	<div class="content">
+		<div class="header">
+			<div class="parkinglogo">
+				PARK <span class="green">MY Vehicle</span>
+			</div>
+			<div class="breadcrumb">Home / Dashboard</div>
+		</div>
+
+		<br>
+		<section class="cards" id="cards-section">
+			<div class="card blue">
+				<h2 id="total-bookings">0</h2>
+				<!-- Added an h2 for the total bookings -->
+				<p>Total Booking</p>
+				<a href="#">More info <i class="fas fa-arrow-circle-right"></i></a>
+			</div>
+			<div class="card green">
+				<h2>0</h2>
+				<!-- Placeholder to be updated dynamically -->
+				<p>Total Parking Slot</p>
+				<a href="#">More info <i class="fas fa-arrow-circle-right"></i></a>
+			</div>
+			<div class="card bluecolor">
+				<h2>53</h2>
+				<p>Total Vehicle</p>
+				<a href="#">More info <i class="fas fa-arrow-circle-right"></i></a>
+			</div>
+			<div class="card teal">
+				<h2>53</h2>
+				<p>Total Vehicle Owner</p>
+				<a href="#">More info <i class="fas fa-arrow-circle-right"></i></a>
+			</div>
+		</section>
+		<!-- Booking Table Section -->
+<section class="booking-table" id="booking-table-section" style="display: none;">
+  <h2 style="margin-left:300px;">Booking Details</h2>
+  <table id="booking-table">
+   <thead>
+  <tr>
+    <th>User Name</th>
+    <th>Mobile No</th>
+    <th>Reservation Id</th>
+    <th>Slot Number</th>
+    <th>Vehicle Type</th>
+    <th>Vehicle Name</th>
+    <th>Date & Time</th>
+    <th>Duration(hr)</th>
+    <th>Amount</th>
+    <th>Payment Status</th>
+    <th>Action</th>
+  </tr>
+</thead>
+   
+    
+    <tbody>
+      <!-- Dynamic content will be inserted here -->
+    </tbody>
+  </table>
+  <div class="pagination-controls">
+    <button id="prev-page">Previous</button>
+    <span id="current-page">1</span>
+    <button id="next-page">Next</button>
+  </div>
+</section>
+		
+
+		<section class="parking-slot-table" id="parking-slot-section"
+			style="display: none;">
+			<h2></h2>
+			<button id="addSlotBtn" onclick="openAddSlotModal()">+ Add Slot</button>
+			
+			<table id="parkingSlotTable">
+				<thead>
+					<tr>
+					<th>Category</th>
+					<th>Section</th>
+					<th>Parking Slot No.</th>
+					<th>Slot Status</th>
+					<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>1</td>
+						<td>Available</td>
+						<td class="del-modify">
+							<button class="delete-btn" style="background-color: red;"
+								data-id="1">Delete</button>
+							<button class="modify-btn" data-id="1" data-slot-number="1"
+								data-status="Available">Modify</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<!-- Pagination Controls -->
+			<div class="pagination-controls">
+				<button id="prev-slot-page">Previous</button>
+				<span id="current-slot-page">1</span>
+				<button id="next-slot-page">Next</button>
+			</div>
+<!-- Add or Modify Parking Slot Modal -->
+<div class="modal fade" id="addSlotModal" tabindex="-1" role="dialog" aria-labelledby="addSlotModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addSlotModalLabel">Add or Modify Parking Slot</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addSlotForm">
+                    <div class="form-group">
+                        <label for="slotcategory">Category:</label>
+                        <select id="slotcategory" class="form-control">
+                            <option value="Two Villar">Two Villar</option>
+                            <option value="Four Villar">Four Villar</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="slotSection">Section:</label>
+                        <select id="slotSection" class="form-control">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="slotNumber">Parking Slot No.:</label>
+                        <input type="text" id="slotNumber" name="slotNumber" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="slotStatus">Status:</label>
+                        <select id="slotStatus" class="form-control">
+                            <option value="Available">Available</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</section>
+
+		<section id="user-management-section" style="display: none;">
+			<h2></h2>
+			<table id="userTable">
+				<thead>
+					<tr>
+						<th>Full Name</th>
+						<th>Mobile Number</th>
+						<th>Email</th>
+						<th>Vehicle Type</th>
+						<th>Vehicle Number</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- Rows will be dynamically added here -->
+				</tbody>
+				<!-- Pagination Controls -->
+
+			</table>
+			<!-- Pagination Controls -->
+			<!-- User Management Pagination Controls -->
+			<div class="pagination-controls">
+				<button id="user-prev-page">Previous</button>
+				<span id="user-current-page">1</span>
+				<button id="user-next-page">Next</button>
+			</div>
+		</section>
+
+		<div class="footer" >
+			<h4 style="font-size:1rem;margin-right:100px" > Vehicle Parking Management System. All rights
+				reserved.</h4>
+		</div>
+	</div>
+</body>
+</html>
